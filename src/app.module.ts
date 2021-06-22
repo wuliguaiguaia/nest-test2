@@ -1,3 +1,4 @@
+import { LoggerMiddleware } from './common/middleware/logger.middleware';
 import {
   WinstonModule,
   utilities as nestWinstonModuleUtilities,
@@ -7,7 +8,7 @@ import { AppController } from './app.controller';
 import { ArticleModule } from './modules/article/article.module';
 import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Global, Module } from '@nestjs/common';
+import { Global, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { CategoryModule } from './modules/category/category.module';
 import { AuthModule } from './modules/auth/auth.module';
 import * as DailyRotateFile from 'winston-daily-rotate-file';
@@ -76,4 +77,9 @@ import * as winston from 'winston';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('');
+    // 支持 path、method: { path: 'cats', method: RequestMethod.GET }
+  }
+}

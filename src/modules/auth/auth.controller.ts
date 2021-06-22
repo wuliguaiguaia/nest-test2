@@ -19,6 +19,7 @@ export class AuthController {
       throw new ApiException(ApiErrorCode.NOT_VALUABLE_USER_ID, '用户不存在');
     }
     const user = users[0];
+    this.logger.log('231321');
     if (user.password !== password) {
       throw new ApiException(ApiErrorCode.TABLE_OPERATE_ERROR, '密码错误');
     } else {

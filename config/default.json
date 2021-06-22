@@ -11,5 +11,8 @@
   },
   "log": {
     "prefix":"柠檬树下你和我"
+  },
+  "cls": {
+    "namespace": "lemon"
   }
 }

@@ -24,7 +24,7 @@ export class UserController {
    */
   @Get()
   @UseGuards(RolesGuard)
-  @Roles(RoleEnum.ADMIN)
+  // @Roles(RoleEnum.ADMIN)
   async getUserList(@Query() userDto: QueryUserDto) {
     return await this.userService.getUserList(userDto);
   }

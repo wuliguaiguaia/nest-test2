@@ -14,7 +14,7 @@ import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApiErrorCode, ApiErrorMap } from './../exceptions/api.code.enum';
-
+import * as cls from 'cls-hooked';
 export interface Response<T> {
   start: number;
   end: number;
@@ -37,6 +37,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
 
     const req: Request = context.switchToHttp().getRequest();
     const { url, method, query, body } = req;
+    const logId = this.getLogid();
 
     return next.handle().pipe(
       map((data) => ({
@@ -48,9 +49,16 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
         errStr: ApiErrorMap[errNo],
       })),
       tap((data) => {
-        const msg = { url, method, query, body, data };
+        const msg = { logId, url, method, query, body, data };
         this.logger.log(msg);
       }),
     );
+  }
+
+  getLogid() {
+    const namespace = cls.getNamespace('lemon');
+    console.log(namespace, 'namespace');
+
+    return namespace.get('logid');
   }
 }

@@ -1,3 +1,4 @@
+import { clsMiddleware } from './common/middleware/cls.middleware';
 import { ResponseInterceptor } from './common/interceptors/response.interceptor';
 import { ValidationPipe } from './common/pipes/validation.pipe';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
@@ -89,9 +90,14 @@ async function bootstrap() {
   );
 
   /**
+   * 绑定请求上下文
+   */
+  app.use(clsMiddleware);
+
+  /**
    * 日志
    */
-  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
+  // app.useLogger(new MyLogger(app.get(WINSTON_MODULE_NEST_PROVIDER)));
 
   app.useStaticAssets(join(__dirname, '..', 'public')); /* 存储静态文件 */
 

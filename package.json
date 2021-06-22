@@ -28,6 +28,7 @@
     "axios": "^0.21.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "cls-hooked": "^4.2.2",
     "config": "^3.3.6",
     "connect-redis": "^6.0.0",
     "cross-env": "^7.0.3",
