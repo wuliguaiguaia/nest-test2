@@ -15,6 +15,7 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {});
+  // app.setGlobalPrefix('lemon');
 
   app.useGlobalFilters(
     new HttpExceptionFilter(app.get(WINSTON_MODULE_NEST_PROVIDER)),
@@ -97,7 +98,8 @@ async function bootstrap() {
   /**
    * 日志
    */
-  // app.useLogger(new MyLogger(app.get(WINSTON_MODULE_NEST_PROVIDER)));
+  // app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
+  // [winston] Unknown logger level: 231321
 
   app.useStaticAssets(join(__dirname, '..', 'public')); /* 存储静态文件 */
 

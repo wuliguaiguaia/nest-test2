@@ -1,4 +1,4 @@
-import { Logger } from '@nestjs/common';
+import { MyLogger } from './../../common/utils/logger.service';
 import { ApiErrorCode } from './../../common/exceptions/api.code.enum';
 import { ApiException } from './../../common/exceptions/api.exception';
 import { LoginDto } from './../user/dto/user.dto';
@@ -8,7 +8,7 @@ import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
 export class AuthController {
   constructor(
     private readonly userService: UserService,
-    private readonly logger: Logger,
+    private readonly logger: MyLogger,
   ) {}
 
   @Post('login')
@@ -19,7 +19,7 @@ export class AuthController {
       throw new ApiException(ApiErrorCode.NOT_VALUABLE_USER_ID, '用户不存在');
     }
     const user = users[0];
-    this.logger.log('231321');
+    this.logger.log('xxxxx');
     if (user.password !== password) {
       throw new ApiException(ApiErrorCode.TABLE_OPERATE_ERROR, '密码错误');
     } else {

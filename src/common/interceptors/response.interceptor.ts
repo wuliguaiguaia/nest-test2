@@ -7,9 +7,9 @@ import {
   CallHandler,
   ExecutionContext,
   Injectable,
-  Logger,
   NestInterceptor,
 } from '@nestjs/common';
+import { LoggerService } from '@nestjs/common';
 import { Request } from 'express';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -26,7 +26,7 @@ export interface Response<T> {
 
 @Injectable()
 export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
-  constructor(private readonly logger: Logger) {}
+  constructor(private readonly logger: LoggerService) {}
 
   intercept(
     context: ExecutionContext,
@@ -36,7 +36,7 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
     const errNo = ApiErrorCode.SUCCESS;
 
     const req: Request = context.switchToHttp().getRequest();
-    const { url, method, query, body } = req;
+    const { url, method, query, body, params } = req;
     const logId = this.getLogid();
 
     return next.handle().pipe(
@@ -49,16 +49,14 @@ export class ResponseInterceptor<T> implements NestInterceptor<T, Response<T>> {
         errStr: ApiErrorMap[errNo],
       })),
       tap((data) => {
-        const msg = { logId, url, method, query, body, data };
-        this.logger.log(msg);
+        const msg = { logId, url, method, query, params, body, data };
+        this.logger.log(msg, 'ResponseInterceptor');
       }),
     );
   }
 
   getLogid() {
     const namespace = cls.getNamespace('lemon');
-    console.log(namespace, 'namespace');
-
     return namespace.get('logid');
   }
 }

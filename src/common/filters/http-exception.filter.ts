@@ -1,5 +1,7 @@
+import { LoggerService } from '@nestjs/common';
 /**
  * 全局异常捕获
+ * 追加错误日志
  */
 
 import {
@@ -14,7 +16,7 @@ import { Logger } from '@nestjs/common';
 
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  constructor(private readonly logger: Logger) {}
+  constructor(private readonly logger: LoggerService) {}
 
   catch(exception: Error, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -61,6 +63,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
       body,
       data: responseData,
     };
-    this.logger.error(msg);
+    this.logger.error(msg, 'HttpExceptionFilter');
   }
 }
